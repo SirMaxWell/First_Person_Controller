@@ -20,14 +20,17 @@ AMyCharacter::AMyCharacter()
 	
 	GetCapsuleComponent()->InitCapsuleSize(40.0f, 95.0f);
 
-
+	// Camera Setup
 	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("First Person Camera"));
 	FirstPersonCamera->SetupAttachment(GetCapsuleComponent());
 	FirstPersonCamera->AddRelativeLocation(FVector(-40, 1.75, 64));
 	FirstPersonCamera->bUsePawnControlRotation = true;
 
+	// Creates Mesh for the fps hands model
 	HandsMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Character Mesh"));
 
+
+	// Hand Model Setup
 	HandsMesh->SetOnlyOwnerSee(true);
 	HandsMesh->SetupAttachment(FirstPersonCamera);
 	HandsMesh->bCastDynamicShadow = false;
@@ -46,17 +49,10 @@ AMyCharacter::AMyCharacter()
 
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
 
-	//CollectionRange = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionRange"));
-	//CollectionRange->SetupAttachment(RootComponent);
-	//CollectionRange->SetSphereRadius(100.0f);
-
-
-	weaponIndex = 0;
-	jumping = false;
+	// Setting values to default 
+	weaponIndex = 0; 
+	jumping = false; 
 	jumpCount = 0;
-
-	
-
 	speed = 0.5f;
 	walking = true;
 	
@@ -66,11 +62,9 @@ AMyCharacter::AMyCharacter()
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	// attaches the gun to grip point, its located on the hand mesh 
 	GunMesh->AttachToComponent(HandsMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("GripPoint"));
-	
 	World = GetWorld();
-
 	AnimInstance = HandsMesh->GetAnimInstance();
 	
 	
@@ -112,7 +106,7 @@ void AMyCharacter::CheckJump()
 
 void AMyCharacter::Sprint()
 {
-	walking = !walking; // if sprinting then we arent walking 
+	walking = !walking; // if sprinting then we aren't walking 
 	if (walking)
 	{
 		speed = 0.5f;
@@ -225,6 +219,7 @@ void AMyCharacter::SwitchToNextWeapon()
 
 void AMyCharacter::Interact()
 {
+	// Done through BP
 }
 
 
